@@ -1,0 +1,68 @@
+package com.mpha.dao;
+
+import com.mpha.model.Employee;
+
+public interface EmployeeDao {
+   public void createFTEEmployee(Employee employee);
+   public void createPTEmployee(Employee employee);
+   public void viewEmployee();
+}
+
+
+=================
+
+package com.mpha.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import com.mpha.model.Employee;
+import com.mpha.util.MyDbConnection;
+
+public class EmployeeDaoImpl implements EmployeeDao {
+      Connection con;
+      PreparedStatement ps;
+      Statement stmt;
+      ResultSet rs;
+	@Override
+	public void createFTEEmployee(Employee emp) {
+		// TODO Auto-generated method stub
+		con =MyDbConnection.getDbConnection();
+		try {
+			ps=con.prepareStatement("insert into Employee values(?,?)");
+			ps.setInt(1,emp.getEmpno());
+			ps.setString(2,emp.getEmpname());
+			int rows=ps.executeUpdate();
+			System.out.println("no.rows inserted "+rows);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	@Override
+	public void createPTEmployee(Employee employee) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void viewEmployee() {
+		try {
+		con=MyDbConnection.getDbConnection();
+		stmt=con.createStatement();
+		rs=stmt.executeQuery("select * from Employee");
+		while(rs.next()) {
+			System.out.println(rs.getInt(1));
+			System.out.println(rs.getString(2));
+		}
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	
+}
